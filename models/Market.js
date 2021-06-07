@@ -40,11 +40,6 @@ const marketSchema = new Schema(
 			required: [true, 'Please add the number reviews'],
 			default: 0,
 		},
-
-		imgUrl: {
-			type: String,
-			required: [true, 'Please add a photo'],
-		},
 	},
 
 	{
