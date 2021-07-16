@@ -34,7 +34,7 @@ exports.getAllRecipes = asyncHandler(async (req, res) => {
 // @route   GET /api/recipes/:id
 // @access  Public
 
-exports.getRecipe = asyncHandler(async (req, res) => {
+exports.getRecipeById = asyncHandler(async (req, res) => {
 	try {
 		const { id } = req.params
 		const recipe = await Recipe.findById(id)

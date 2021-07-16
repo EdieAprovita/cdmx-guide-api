@@ -1,5 +1,5 @@
-const Doctor = require('../models/Doctor')
-const asyncHandler = require('express-async-handler')
+const Doctor = require('../models/Doctor');
+const asyncHandler = require('express-async-handler');
 
 //@des Fetch all doctors
 //@route GET /api/doctors
@@ -7,8 +7,8 @@ const asyncHandler = require('express-async-handler')
 
 exports.getAllDoctors = asyncHandler(async (req, res) => {
 	try {
-		const pageSize = 10
-		const page = Number(req.query.pageNumber) || 1
+		const pageSize = 10;
+		const page = Number(req.query.pageNumber) || 1;
 
 		const keyword = req.query.pageNumber
 			? {
@@ -17,32 +17,32 @@ exports.getAllDoctors = asyncHandler(async (req, res) => {
 						$options: 'i',
 					},
 			  }
-			: {}
+			: {};
 
-		const count = await Doctor.countDocuments({ ...keyword })
+		const count = await Doctor.countDocuments({ ...keyword });
 		const doctors = await Doctor.find({ ...keyword })
 			.limit(pageSize)
-			.skip(pageSize * (page - 1))
+			.skip(pageSize * (page - 1));
 
-		res.status(200).json({ doctors, page, pages: Math.ceil(count / pageSize) })
+		res.status(200).json({ doctors, page, pages: Math.ceil(count / pageSize) });
 	} catch (error) {
-		res.status(400).json({ message: `${error}`.red })
+		res.status(400).json({ message: `${error}`.red });
 	}
-})
+});
 
 //@des Fectch single doctor
 //@route GET /api/doctors/:id
 //@access Public
 
-exports.getDoctor = asyncHandler(async (req, res) => {
+exports.getDoctorById = asyncHandler(async (req, res) => {
 	try {
-		const { id } = req.params
-		const doctor = await Doctor.findById(id)
-		res.status(200).json({ doctor })
+		const { id } = req.params;
+		const doctor = await Doctor.findById(id);
+		res.status(200).json({ doctor });
 	} catch (error) {
-		res.status(400).json({ message: `${error}`.red })
+		res.status(400).json({ message: `${error}`.red });
 	}
-})
+});
 
 //@des Create a doctor
 //@route POST /api/doctors/:id
@@ -50,19 +50,19 @@ exports.getDoctor = asyncHandler(async (req, res) => {
 
 exports.createDoctor = asyncHandler(async (req, res) => {
 	try {
-		const { name, address, image, contact, numReviews } = req.body
+		const { name, address, image, contact, numReviews } = req.body;
 		const doctor = await Doctor.create({
 			name,
 			address,
 			image,
 			contact,
 			numReviews,
-		})
-		res.status(200).json({ doctor })
+		});
+		res.status(200).json({ doctor });
 	} catch (error) {
-		res.status(400).json({ message: `${error}`.red })
+		res.status(400).json({ message: `${error}`.red });
 	}
-})
+});
 
 // @desc    Update a doctor
 // @route   PUT /api/doctors/:id
@@ -70,19 +70,19 @@ exports.createDoctor = asyncHandler(async (req, res) => {
 
 exports.updateDoctor = asyncHandler(async (req, res) => {
 	try {
-		const { id } = req.params
-		const { name, image, address, contact } = req.body
+		const { id } = req.params;
+		const { name, image, address, contact } = req.body;
 		const doctor = await Doctor.findByIdAndUpdate(id, {
 			name,
 			address,
 			image,
 			contact,
-		})
-		res.status(200).json({ doctor })
+		});
+		res.status(200).json({ doctor });
 	} catch (error) {
-		res.status(400).json({ message: `${error}`.red })
+		res.status(400).json({ message: `${error}`.red });
 	}
-})
+});
 
 // @desc    Delete a doctor
 // @route   DELETE /api/doctors/:id
@@ -90,13 +90,13 @@ exports.updateDoctor = asyncHandler(async (req, res) => {
 
 exports.deleteDoctor = asyncHandler(async (req, res) => {
 	try {
-		const { id } = req.params
-		await Doctor.findByIdAndDelete(id)
-		res.status(200).json({ message: 'Delete doctor' })
+		const { id } = req.params;
+		await Doctor.findByIdAndDelete(id);
+		res.status(200).json({ message: 'Delete doctor' });
 	} catch (error) {
-		res.status(400).json({ message: `${error}`.red })
+		res.status(400).json({ message: `${error}`.red });
 	}
-})
+});
 
 // @desc    Create new review
 // @route   POST /api/doctors/:id/reviews
@@ -104,16 +104,16 @@ exports.deleteDoctor = asyncHandler(async (req, res) => {
 
 exports.createDoctorReview = asyncHandler(async (req, res) => {
 	try {
-		const { rating, comment } = req.body
-		const doctor = await Doctor.findById(req.params.id)
+		const { rating, comment } = req.body;
+		const doctor = await Doctor.findById(req.params.id);
 
 		if (doctor) {
 			const alreadyReviewed = doctor.reviews.find(
 				r => r.user.toString() === req.user._id.toString()
-			)
+			);
 			if (alreadyReviewed) {
-				res.status(400)
-				throw new Error('Doctor already reviewed')
+				res.status(400);
+				throw new Error('Doctor already reviewed');
 			}
 
 			const review = {
@@ -121,24 +121,24 @@ exports.createDoctorReview = asyncHandler(async (req, res) => {
 				rating: Number(rating),
 				comment,
 				user: req.user._id,
-			}
+			};
 
-			doctor.reviews.push(review)
+			doctor.reviews.push(review);
 
-			doctor.numReviews = doctor.reviews.length
+			doctor.numReviews = doctor.reviews.length;
 
 			doctor.rating =
 				doctor -
 				reviews.reduce((acc, item) => item.rating + acc, 0) /
-					doctor.reviews.length
+					doctor.reviews.length;
 
-			await doctor.save()
-			res.status(201).json({ message: 'Review Added' })
+			await doctor.save();
+			res.status(201).json({ message: 'Review Added' });
 		}
 	} catch (error) {
-		res.status(400).json({ message: `${error}`.red })
+		res.status(400).json({ message: `${error}`.red });
 	}
-})
+});
 
 // @desc    Get top rated doctors
 // @route   GET /api/doctors/top
@@ -146,9 +146,9 @@ exports.createDoctorReview = asyncHandler(async (req, res) => {
 
 exports.getTopDoctor = asyncHandler(async (req, res) => {
 	try {
-		const doctor = await Doctor.find({}).sort({ rating: -1 }).limit(3)
-		res.status(200).json({ doctor })
+		const doctor = await Doctor.find({}).sort({ rating: -1 }).limit(3);
+		res.status(200).json({ doctor });
 	} catch (error) {
-		res.status(400).json({ message: `${error}`.red })
+		res.status(400).json({ message: `${error}`.red });
 	}
-})
+});

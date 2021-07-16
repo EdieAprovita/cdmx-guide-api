@@ -3,7 +3,7 @@ const router = express.Router()
 
 const {
 	getAllRestaurants,
-	getRestaurant,
+	getRestaurantById,
 	createRestaurant,
 	updateRestaurant,
 	deleteRestaurant,
@@ -16,7 +16,7 @@ const { protect } = require('../middleware/authMiddleware')
 //CRUD RESTAURANTS
 
 router.get('/', getAllRestaurants)
-router.get('/:id', getRestaurant)
+router.get('/:id', getRestaurantById)
 router.get('/top', getTopRestaurants)
 router.post('/:id/reviews', protect, createRestaurantReview)
 router.post('/create', protect, createRestaurant)

@@ -2,7 +2,7 @@ const router = require('express').Router()
 
 const {
 	getAllDoctors,
-	getDoctor,
+	getDoctorById,
 	createDoctor,
 	updateDoctor,
 	deleteDoctor,
@@ -16,7 +16,7 @@ const { protect } = require('../middleware/authMiddleware')
 
 router.get('/', getAllDoctors)
 router.get('/top', getTopDoctor)
-router.get('/:id', getDoctor)
+router.get('/:id', getDoctorById)
 router.post('/create', protect, createDoctor)
 router.post('/:id/reviews', protect, createDoctorReview)
 router.put('/edit/:id', protect, updateDoctor)

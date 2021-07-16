@@ -2,7 +2,7 @@ const router = require('express').Router()
 
 const {
 	getAllRecipes,
-	getRecipe,
+	getRecipeById,
 	createRecipe,
 	updateRecipe,
 	deleteRecipe,
@@ -15,7 +15,7 @@ const { protect } = require('../middleware/authMiddleware')
 //CRUD RECIPES
 
 router.get('/', getAllRecipes)
-router.get('/:id', getRecipe)
+router.get('/:id', getRecipeById)
 router.get('/top', getTopRecipes)
 router.post('/create', protect, createRecipe)
 router.post('/:id/reviews', protect, createRecipeReview)

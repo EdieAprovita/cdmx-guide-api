@@ -2,7 +2,7 @@ const router = require('express').Router()
 
 const {
 	getAllBusiness,
-	getBusiness,
+	getBusinessById,
 	createBusiness,
 	updateBusiness,
 	deleteBusiness,
@@ -16,7 +16,7 @@ const { protect } = require('../middleware/authMiddleware')
 
 router.get('/', getAllBusiness)
 router.get('/top', getTopBusiness)
-router.get('/:id', getBusiness)
+router.get('/:id', getBusinessById)
 router.post('/create', protect, createBusiness)
 router.post('/:id/reviews', protect, createBusinessReview)
 router.put('/edit/:id', protect, updateBusiness)

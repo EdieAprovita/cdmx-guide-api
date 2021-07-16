@@ -2,7 +2,7 @@ const router = require('express').Router()
 
 const {
 	getAllProfessions,
-	getProfession,
+	getProfessionById,
 	createProfession,
 	updateProfession,
 	deleteProfession,
@@ -16,7 +16,7 @@ const { protect } = require('../middleware/authMiddleware')
 
 router.get('/', getAllProfessions)
 router.get('/top', getTopProfession)
-router.get('/:id', getProfession)
+router.get('/:id', getProfessionById)
 router.post('/create', protect, createProfession)
 router.post('/:id/reviews', protect, createProfessionReview)
 router.put('/edit/:id', protect, updateProfession)
