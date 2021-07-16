@@ -5,7 +5,7 @@ const asyncHandler = require('express-async-handler');
 // @route   GET /api/businnesses
 // @access  Public
 
-exports.getAllBusiness = asyncHandler(async (req, res) => {
+exports.getAllBusinesses = asyncHandler(async (req, res) => {
 	try {
 		const pageSize = 10;
 		const page = Number(req.query.pageNumber) || 1;
