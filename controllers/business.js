@@ -20,11 +20,11 @@ exports.getAllBusinesses = asyncHandler(async (req, res) => {
 			: {};
 
 		const count = await Business.countDocuments({ ...keyword });
-		const business = await Business.find({ ...keyword })
+		const businesses = await Business.find({ ...keyword })
 			.limit(pageSize)
 			.skip(pageSize * (page - 1));
 
-		res.status(200).json({ business, page, pages: Math.ceil(count / pageSize) });
+		res.status(200).json({ businesses, page, pages: Math.ceil(count / pageSize) });
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red });
 	}
