@@ -1,11 +1,11 @@
-const router = require('express').Router()
+const router = require('express').Router();
 
 router.get('/', (req, res) => {
 	try {
-		res.status(200).json({ msg: 'API working!!' })
+		res.status(200).json({ msg: 'API is working!!' });
 	} catch (error) {
-		res.status(400).json({ message: `${error}` })
+		res.status(400).json({ message: `${error}` });
 	}
-})
+});
 
-module.exports = router
+module.exports = router;
