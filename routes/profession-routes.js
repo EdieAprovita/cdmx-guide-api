@@ -2,7 +2,7 @@ const router = require('express').Router()
 
 const {
 	getAllProfessions,
-	getProfessionById,
+	getProfession,
 	createProfession,
 	updateProfession,
 	deleteProfession,
@@ -16,10 +16,11 @@ const { protect } = require('../middleware/authMiddleware')
 
 router.get('/', getAllProfessions)
 router.get('/top', getTopProfession)
-router.get('/:id', getProfessionById)
+router.get('/:id', getProfession)
 router.post('/create', protect, createProfession)
 router.post('/:id/reviews', protect, createProfessionReview)
 router.put('/edit/:id', protect, updateProfession)
 router.delete('/delete/:id', protect, deleteProfession)
 
 module.exports = router
+

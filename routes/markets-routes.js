@@ -3,7 +3,7 @@ const router = express.Router()
 
 const {
 	getAllMarkets,
-	getMarketById,
+	getMarket,
 	createMarket,
 	updateMarket,
 	deleteMarket,
@@ -16,7 +16,7 @@ const { protect } = require('../middleware/authMiddleware')
 //CRUD MARKETS
 
 router.get('/', getAllMarkets)
-router.get('/:id', getMarketById)
+router.get('/:id', getMarket)
 router.get('/top', getTopMarkets)
 router.post('/:id/reviews', protect, createMarketReview)
 router.post('/create', protect, createMarket)

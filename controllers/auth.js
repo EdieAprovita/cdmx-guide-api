@@ -6,7 +6,7 @@ const asyncHandler = require('express-async-handler')
 // @route   POST /api/auth/login
 // @access  Public
 
-exports.authUser = asyncHandler(async (req, res) => {
+exports.loginUser = asyncHandler(async (req, res) => {
 	const { email, password } = req.body
 
 	const user = await User.findOne({ email })

@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
 const {
-	authUser,
+	loginUser,
 	registerUser,
 	getUserProfile,
 	updateUserProfile,
@@ -11,17 +11,17 @@ const {
 	updateUser,
 } = require('../controllers/auth')
 
-const { protect } = require('../middleware/authMiddleware')
+const { protect, admin } = require('../middleware/authMiddleware')
 
 //AUTH ROUTES
 
-router.get('/', protect, getUsers)
+router.get('/', protect, admin, getUsers)
 router.get('/profile', protect, getUserProfile)
-router.get('/:id', protect, getUserById)
+router.get('/:id', protect, admin, getUserById)
 router.post('/signup', registerUser)
-router.post('/login', authUser)
+router.post('/login', loginUser)
 router.put('/profile/updateMe', protect, updateUserProfile)
-router.put('/update/:id', protect, updateUser)
-router.delete('/delete/:id', protect, deleteUser)
+router.put('/update/:id', protect, admin, updateUser)
+router.delete('/delete/:id', protect, admin, deleteUser)
 
 module.exports = router
