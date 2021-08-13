@@ -1,11 +1,10 @@
-
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const Review = require('./Review')
 
 const professionSchema = new Schema(
 	{
-		profession: {
+		professionName: {
 			type: String,
 			required: [true, 'Please at your profession'],
 		},
