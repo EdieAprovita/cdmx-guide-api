@@ -36,7 +36,7 @@ exports.getAllBusiness = asyncHandler(async (req, res) => {
 
 exports.getBusiness = asyncHandler(async (req, res) => {
 	try {
-		const business = await Business.findById(req.params.id)
+		const business = await Business.findById(req.params._id)
 		res.status(200).json({ business })
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
@@ -49,16 +49,8 @@ exports.getBusiness = asyncHandler(async (req, res) => {
 
 exports.createBusiness = asyncHandler(async (req, res) => {
 	try {
-		const {
-			name,
-			author,
-			address,
-			contact,
-			image,
-			budget,
-			typeBusiness,
-			numReviews,
-		} = req.body
+		const { name, address, contact, image, budget, typeBusiness } = req.body
+		const author = req.user._id
 		const business = await Business.create({
 			name,
 			author,
@@ -67,7 +59,6 @@ exports.createBusiness = asyncHandler(async (req, res) => {
 			image,
 			budget,
 			typeBusiness,
-			numReviews,
 		})
 		res.status(201).json({ business })
 	} catch (error) {
@@ -82,7 +73,7 @@ exports.createBusiness = asyncHandler(async (req, res) => {
 exports.updateBusiness = asyncHandler(async (req, res) => {
 	try {
 		const { name, address, image, contact, budget, typeBusiness } = req.body
-		const business = await Business.findByIdAndUpdate(req.params.id, {
+		const business = await Business.findByIdAndUpdate(req.params._id, {
 			name,
 			address,
 			image,
@@ -102,7 +93,7 @@ exports.updateBusiness = asyncHandler(async (req, res) => {
 
 exports.deleteBusiness = asyncHandler(async (req, res) => {
 	try {
-		await Business.findByIdAndDelete(req.params.id)
+		await Business.findByIdAndDelete(req.params._id)
 		res.status(200).json({ message: 'Deleted Business' })
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
@@ -117,7 +108,7 @@ exports.createBusinessReview = asyncHandler(async (req, res) => {
 	try {
 		const { rating, comment } = req.body
 
-		const business = await Business.findById(req.params.id)
+		const business = await Business.findById(req.params._id)
 
 		if (business) {
 			const alreadyReviewed = business.reviews.find(

@@ -60,11 +60,12 @@ exports.createRecipe = asyncHandler(async (req, res) => {
 			cookingTime,
 			difficulty,
 			budget,
-			numReviews,
 		} = req.body
+		const author = req.user._id
 
 		const recipe = await Recipe.create({
 			title,
+			author,
 			description,
 			instructions,
 			ingredients,
@@ -73,7 +74,6 @@ exports.createRecipe = asyncHandler(async (req, res) => {
 			cookingTime,
 			difficulty,
 			budget,
-			numReviews,
 		})
 
 		res.status(201).json({ recipe })
@@ -98,6 +98,7 @@ exports.updateRecipe = asyncHandler(async (req, res) => {
 			image,
 			cookingTime,
 			difficulty,
+			budget,
 		} = req.body
 
 		const recipe = await Recipe.findByIdAndUpdate(id, {
@@ -109,6 +110,7 @@ exports.updateRecipe = asyncHandler(async (req, res) => {
 			image,
 			cookingTime,
 			difficulty,
+			budget,
 		})
 
 		res.status(200).json({ recipe })

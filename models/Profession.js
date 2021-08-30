@@ -14,6 +14,27 @@ const professionSchema = new Schema(
 			ref: 'User',
 		},
 
+		industry: {
+			type: String,
+			required: [true, 'Please at your industry'],
+			enum: [
+				'Administrativo',
+				'Finanzas',
+				'Diseño',
+				'Tecnologia',
+				'Alimentos',
+				'Servicios Generales',
+				'Mercadotecnia',
+				'Humanidades',
+				'Educacion',
+				'Ventas',
+				'RH',
+				'Ingenieria',
+				'Transporte',
+				'Seguros',
+			],
+		},
+
 		contact: [
 			{
 				phone: {
@@ -28,14 +49,9 @@ const professionSchema = new Schema(
 					unique: [true, 'This email is already in use'],
 				},
 
-				facebook: {
+				linkedin: {
 					type: String,
-					unique: [true, 'This facebook is already in use'],
-				},
-
-				instagram: {
-					type: String,
-					unique: [true, 'This instagram is already in use'],
+					unique: [true, 'This linkedin is already in use'],
 				},
 			},
 		],

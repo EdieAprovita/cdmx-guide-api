@@ -50,13 +50,15 @@ exports.getDoctor = asyncHandler(async (req, res) => {
 
 exports.createDoctor = asyncHandler(async (req, res) => {
 	try {
-		const { name, address, image, contact, numReviews } = req.body
+		const { name, address, image, contact } = req.body
+		const author = req.user._id
+
 		const doctor = await Doctor.create({
 			name,
+			author,
 			address,
 			image,
 			contact,
-			numReviews,
 		})
 		res.status(200).json({ doctor })
 	} catch (error) {

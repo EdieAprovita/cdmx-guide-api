@@ -50,13 +50,14 @@ exports.getProfession = asyncHandler(async (req, res) => {
 
 exports.createProfession = asyncHandler(async (req, res) => {
 	try {
-		const { professionName, address, image, contact, numReviews } = req.body
+		const { professionName, industry, contact } = req.body
+		const author = req.user._id
+
 		const profession = await Profession.create({
 			professionName,
-			address,
-			image,
+			author,
+			industry,
 			contact,
-			numReviews,
 		})
 		res.status(200).json({ profession })
 	} catch (error) {
@@ -71,11 +72,10 @@ exports.createProfession = asyncHandler(async (req, res) => {
 exports.updateProfession = asyncHandler(async (req, res) => {
 	try {
 		const { id } = req.params
-		const { professionName, image, address, contact } = req.body
+		const { professionName, industry, contact } = req.body
 		const profession = await Profession.findByIdAndUpdate(id, {
 			professionName,
-			address,
-			image,
+			industry,
 			contact,
 		})
 		res.status(200).json({ profession })

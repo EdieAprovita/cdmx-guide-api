@@ -49,13 +49,14 @@ exports.getMarket = asyncHandler(async (req, res) => {
 
 exports.createMarket = asyncHandler(async (req, res) => {
 	try {
-		const { name, address, image, numReviews } = req.body
+		const { name, address, image } = req.body
+		const author = req.user._id
 
 		const market = await Market.create({
 			name,
+			author,
 			address,
 			image,
-			numReviews,
 		})
 		res.status(201).json({ market })
 	} catch (error) {

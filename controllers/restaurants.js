@@ -50,15 +50,17 @@ exports.getRestaurant = asyncHandler(async (req, res) => {
 
 exports.createRestaurant = asyncHandler(async (req, res) => {
 	try {
-		const { name, typePlace, address, image, budget, numReviews } = req.body
+		const { name, typePlace, address, image, budget, contact } = req.body
+		const author = req.user._id
 
 		const restaurant = await Restaurant.create({
 			name,
+			author,
 			typePlace,
 			address,
 			image,
 			budget,
-			numReviews,
+			contact,
 		})
 		res.status(201).json({ restaurant })
 	} catch (error) {
