@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const Review = require('./Review')
@@ -43,6 +42,11 @@ const doctorSchema = new Schema(
 				facebook: {
 					type: String,
 					unique: [true, 'This facebook is already in use'],
+				},
+
+				linkedin: {
+					type: String,
+					unique: [true, 'This linkedin is already in use'],
 				},
 
 				instagram: {
