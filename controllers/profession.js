@@ -1,5 +1,5 @@
-const Profession = require('../models/Profession')
-const asyncHandler = require('express-async-handler')
+const Profession = require('../models/Profession');
+const asyncHandler = require('express-async-handler');
 
 //@des Fetch all professions
 //@route GET /api/professions
@@ -7,8 +7,8 @@ const asyncHandler = require('express-async-handler')
 
 exports.getAllProfessions = asyncHandler(async (req, res) => {
 	try {
-		const pageSize = 10
-		const page = Number(req.query.pageNumber) || 1
+		const pageSize = 10;
+		const page = Number(req.query.pageNumber) || 1;
 
 		const keyword = req.query.pageNumber
 			? {
@@ -17,18 +17,18 @@ exports.getAllProfessions = asyncHandler(async (req, res) => {
 						$options: 'i',
 					},
 			  }
-			: {}
+			: {};
 
-		const count = await Profession.countDocuments({ ...keyword })
+		const count = await Profession.countDocuments({ ...keyword });
 		const professions = await Profession.find({ ...keyword })
 			.limit(pageSize)
-			.skip(pageSize * (page - 1))
+			.skip(pageSize * (page - 1));
 
-		res.status(200).json({ professions, page, pages: Math.ceil(count / pageSize) })
+		res.status(200).json({ professions, page, pages: Math.ceil(count / pageSize) });
 	} catch (error) {
-		res.status(400).json({ message: `${error}`.red })
+		res.status(400).json({ message: `${error}`.red });
 	}
-})
+});
 
 //@des Fectch single profession
 //@route GET /api/doctors/:id
@@ -36,13 +36,13 @@ exports.getAllProfessions = asyncHandler(async (req, res) => {
 
 exports.getProfession = asyncHandler(async (req, res) => {
 	try {
-		const { id } = req.params
-		const profession = await Profession.findById(id)
-		res.status(200).json({ profession })
+		const { id } = req.params;
+		const profession = await Profession.findById(id);
+		res.status(200).json({ profession });
 	} catch (error) {
-		res.status(400).json({ message: `${error}`.red })
+		res.status(400).json({ message: `${error}`.red });
 	}
-})
+});
 
 //@des Create a profession
 //@route POST /api/doctors/:id
@@ -50,20 +50,22 @@ exports.getProfession = asyncHandler(async (req, res) => {
 
 exports.createProfession = asyncHandler(async (req, res) => {
 	try {
-		const { professionName, industry, contact } = req.body
-		const author = req.user._id
+		const { professionName, industry, contact, rating, numReviews } = req.body;
+		const author = req.user._id;
 
 		const profession = await Profession.create({
 			professionName,
 			author,
 			industry,
 			contact,
-		})
-		res.status(200).json({ profession })
+			rating,
+			numReviews,
+		});
+		res.status(200).json({ profession });
 	} catch (error) {
-		res.status(400).json({ message: `${error}`.red })
+		res.status(400).json({ message: `${error}`.red });
 	}
-})
+});
 
 // @desc    Update a profession
 // @route   PUT /api/doctors/:id
@@ -71,18 +73,18 @@ exports.createProfession = asyncHandler(async (req, res) => {
 
 exports.updateProfession = asyncHandler(async (req, res) => {
 	try {
-		const { id } = req.params
-		const { professionName, industry, contact } = req.body
+		const { id } = req.params;
+		const { professionName, industry, contact } = req.body;
 		const profession = await Profession.findByIdAndUpdate(id, {
 			professionName,
 			industry,
 			contact,
-		})
-		res.status(200).json({ profession })
+		});
+		res.status(200).json({ profession });
 	} catch (error) {
-		res.status(400).json({ message: `${error}`.red })
+		res.status(400).json({ message: `${error}`.red });
 	}
-})
+});
 
 // @desc    Delete a profession
 // @route   DELETE /api/doctors/:id
@@ -90,13 +92,13 @@ exports.updateProfession = asyncHandler(async (req, res) => {
 
 exports.deleteProfession = asyncHandler(async (req, res) => {
 	try {
-		const { id } = req.params
-		await Profession.findByIdAndDelete(id)
-		res.status(200).json({ message: 'Delete profession' })
+		const { id } = req.params;
+		await Profession.findByIdAndDelete(id);
+		res.status(200).json({ message: 'Delete profession' });
 	} catch (error) {
-		res.status(400).json({ message: `${error}`.red })
+		res.status(400).json({ message: `${error}`.red });
 	}
-})
+});
 
 // @desc    Create new review
 // @route   POST /api/doctors/:id/reviews
@@ -104,16 +106,16 @@ exports.deleteProfession = asyncHandler(async (req, res) => {
 
 exports.createProfessionReview = asyncHandler(async (req, res) => {
 	try {
-		const { rating, comment } = req.body
-		const profession = await Profession.findById(req.params.id)
+		const { rating, comment } = req.body;
+		const profession = await Profession.findById(req.params.id);
 
 		if (profession) {
 			const alreadyReviewed = profession.reviews.find(
 				r => r.user.toString() === req.user._id.toString()
-			)
+			);
 			if (alreadyReviewed) {
-				res.status(400)
-				throw new Error('Profession already reviewed')
+				res.status(400);
+				throw new Error('Profession already reviewed');
 			}
 
 			const review = {
@@ -121,24 +123,24 @@ exports.createProfessionReview = asyncHandler(async (req, res) => {
 				rating: Number(rating),
 				comment,
 				user: req.user._id,
-			}
+			};
 
-			profession.reviews.push(review)
+			profession.reviews.push(review);
 
-			profession.numReviews = profession.reviews.length
+			profession.numReviews = profession.reviews.length;
 
 			profession.rating =
 				profession -
 				reviews.reduce((acc, item) => item.rating + acc, 0) /
-					profession.reviews.length
+					profession.reviews.length;
 
-			await profession.save()
-			res.status(201).json({ message: 'Review Added' })
+			await profession.save();
+			res.status(201).json({ message: 'Review Added' });
 		}
 	} catch (error) {
-		res.status(400).json({ message: `${error}`.red })
+		res.status(400).json({ message: `${error}`.red });
 	}
-})
+});
 
 // @desc    Get top rated doctors
 // @route   GET /api/doctors/top
@@ -146,9 +148,9 @@ exports.createProfessionReview = asyncHandler(async (req, res) => {
 
 exports.getTopProfession = asyncHandler(async (req, res) => {
 	try {
-		const profession = await Profession.find({}).sort({ rating: -1 }).limit(3)
-		res.status(200).json({ profession })
+		const profession = await Profession.find({}).sort({ rating: -1 }).limit(3);
+		res.status(200).json({ profession });
 	} catch (error) {
-		res.status(400).json({ message: `${error}`.red })
+		res.status(400).json({ message: `${error}`.red });
 	}
-})
+});
